@@ -88,7 +88,9 @@
             <input name="travel_date" type="date" placeholder="Travel Date" />
           </div>
         </div>
-        <button type="submit">Save & Start Monitoring</button>
+        
+<button id="startMonitoring">Save & Start Monitoring</button>
+
       </form>
       <div style="margin-top:8px;color:green"></div>
       <div style="margin-top:8px;color:red"></div>
@@ -179,5 +181,7 @@
       </div>
     </div>
   </div>
+  <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
 </html>
+
