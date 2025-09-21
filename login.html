@@ -1,36 +1,76 @@
-<!-- templates/login.html -->
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Login - Smart Tour</title>
-  <style>
-    body{font-family:system-ui,Segoe UI,Roboto;background:#f3f4f6;padding:30px}
-    .card{max-width:440px;margin:40px auto;padding:22px;background:white;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.08)}
-    input, button{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #e5e7eb}
-    button{background:#2563eb;color:white;border:none}
-    .msg{padding:10px;border-radius:6px;margin-top:10px}
-    .error{background:#fee2e2;color:#991b1b}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Smart Tour</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #2b6ef6;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button {
+            background: #2b6ef6;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #1e4fc2;
+        }
+    </style>
 </head>
 <body>
-  <div class="card">
-    <h2>Login</h2>
-    <form method="post" action="login.html">
-      <input name="unique_id" placeholder="Unique ID (e.g. A1B2C3D4)" required />
-      <input name="password" type="password" placeholder="Password" required />
-      <button type="submit">Login<a herf="dashboard.html"></button>
-    </form>
-      <div class="msg error"></div>
-    <p style="margin-top:12px;color:#6b7280">Don't have an account? <a href="kyc.html">Register</a></p>
-  </div>
-  <script>
-  document.querySelector("form").addEventListener("submit", function(event) {
-    event.preventDefault(); // Stop form from submitting normally
-    window.location.href = "dashboard.html"; // Redirect to dashboard page
-  });
-</script>
+    <div class="login-container">
+        <h2>Login to Smart Tour</h2>
+        <form id="loginForm">
+            <input type="text" id="unique_id" placeholder="Enter Unique ID" required>
+            <input type="password" id="password" placeholder="Enter Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
 
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            // For now, simply redirect to dashboard.html when form is filled
+            window.location.href = "dashboard.html";
+        });
+    </script>
 </body>
 </html>
