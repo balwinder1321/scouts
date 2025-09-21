@@ -1,0 +1,36 @@
+<!-- templates/login.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login - Smart Tour</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto;background:#f3f4f6;padding:30px}
+    .card{max-width:440px;margin:40px auto;padding:22px;background:white;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.08)}
+    input, button{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #e5e7eb}
+    button{background:#2563eb;color:white;border:none}
+    .msg{padding:10px;border-radius:6px;margin-top:10px}
+    .error{background:#fee2e2;color:#991b1b}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Login</h2>
+    <form method="post" action="login.html">
+      <input name="unique_id" placeholder="Unique ID (e.g. A1B2C3D4)" required />
+      <input name="password" type="password" placeholder="Password" required />
+      <button type="submit">Login<a herf="dashboard.html"></button>
+    </form>
+      <div class="msg error"></div>
+    <p style="margin-top:12px;color:#6b7280">Don't have an account? <a href="kyc.html">Register</a></p>
+  </div>
+  <script>
+  document.querySelector("form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Stop form from submitting normally
+    window.location.href = "dashboard.html"; // Redirect to dashboard page
+  });
+</script>
+
+</body>
+</html>
