@@ -1,0 +1,35 @@
+<!-- templates/index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Smart Tour NE- Welcome</title>
+  <style>
+    body{margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:white;font-family:system-ui,Segoe UI,Roboto;}
+    .card{display:flex;flex-direction:column;align-items:center;gap:14px}
+    img{width:180px;height:180px;border-radius:12px;object-fit:cover;box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+    h1{font-size:28px;margin:0}
+    p{margin:0;opacity:0.9}
+    /* simple scale animation */
+    .logo { animation: pop 5.0s ease; }
+    @keyframes pop {
+      0% { transform: scale(.6); opacity:0 }
+      60% { transform: scale(1.06); opacity:1 }
+      100% { transform: scale(1); }
+    }
+  </style>
+  <script>
+    // redirect after 2s to KYC
+    setTimeout(() => { window.location.href = "kyc.html"; }, 10000);
+  </script>
+</head>
+<body>
+  <div class="card">
+    <img class="logo" src="safetour.jpg" alt="tour">
+    <h1><ul>Smart Tour NE</ul></h1>
+    <p>Safe travels — AI-assisted alerts & local help</p>
+    <p>created by SCOUTS</p>
+  </div>  
+</body>
+</html>
