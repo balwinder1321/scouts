@@ -1,0 +1,183 @@
+<!-- templates/dashboard.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard - Smart Tour</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto;background:#f8fafc;padding:24px}
+    .wrap{max-width:920px;margin:20px auto}
+    .card{background:white;padding:18px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.06);margin-bottom:14px}
+    input, button, select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #e5e7eb}
+    button{background:#2563eb;color:white;border:none}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:720px){ .row{grid-template-columns:1fr} }
+    .links a{display:block;margin:6px 0;color:#2563eb;text-decoration:none}
+    .alerts{background:#fff7ed;padding:10px;border-radius:8px}
+  </style>
+  <script>
+    async function getGeolocationAndNotify() {
+      if (!navigator.geolocation) {
+        console.warn("Geolocation not supported");
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+
+        // send to server (optional)
+        fetch('/location', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({lat, lon})
+        });
+
+        // start polling alerts
+        startPollingAlerts(lat, lon);
+      }, (err) => {
+        console.warn("Geolocation denied or failed", err);
+      }, { enableHighAccuracy:true, timeout:8000 });
+    }
+
+    let pollInterval = null;
+    function startPollingAlerts(lat, lon){
+      if(pollInterval) clearInterval(pollInterval);
+      async function poll(){
+        const dest = document.getElementById('destination').value || '';
+        const res = await fetch(`/alerts?lat=${lat}&lon=${lon}&destination=${encodeURIComponent(dest)}`);
+        const data = await res.json();
+        const container = document.getElementById('alertsContainer');
+        container.innerHTML = '';
+        if(data.alerts && data.alerts.length){
+          data.alerts.forEach(a=>{
+            const el = document.createElement('div');
+            el.className = 'alerts';
+            el.innerHTML = `<strong>${a.type}</strong><div>${a.message}</div>`;
+            container.appendChild(el);
+          });
+        } else {
+          container.innerHTML = '<div style="color:#6b7280">No alerts for your area right now.</div>';
+        }
+      }
+      poll(); // immediate
+      pollInterval = setInterval(poll, 30 * 1000); // every 30s
+    }
+
+    window.onload = () => {
+      // try to get geolocation on load
+      getGeolocationAndNotify();
+    }
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h2>Welcome manisai</h2>
+      <div><a href="/logout">Logout</a></div>
+    </div>
+
+    <div class="card">
+      <h3>Plan a Journey</h3>
+      <form method="post" action="/dashboard" onsubmit="return true">
+        <div class="row">
+          <div>
+            <input id="destination" name="destination" placeholder="Destination (city/place)" />
+          </div>
+          <div>
+            <input name="travel_date" type="date" placeholder="Travel Date" />
+          </div>
+        </div>
+        <button type="submit">Save & Start Monitoring</button>
+      </form>
+      <div style="margin-top:8px;color:green"></div>
+      <div style="margin-top:8px;color:red"></div>
+    </div>
+
+    <div class="card">
+      <h3>Live Alerts</h3>
+      <div id="alertsContainer" style="min-height:56px"></div>
+      <small style="color:#6b7280">App polls for alerts every 30s. Integrate real feeds for production.</small>
+    </div>
+
+    <div class="card">
+      <div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin-top: 20px;
+            color: #2b6ef6;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px auto;
+            max-width: 800px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px 25px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #2b6ef6;
+            color: white;
+            text-decoration: none;
+            width: 250px;
+            transition: 0.3s;
+        }
+
+        .btn i {
+            font-size: 22px;
+        }
+
+        .btn:hover {
+            background: #1e4fc2;
+            transform: translateY(-3px);
+        }
+    </style>
+    <h1>Nearby essencials</h1>
+    <div class="btn-container">
+        <a href="https://www.google.com/maps/search/Hotels+near+me" class="btn" target="_blank">
+            <i class="fa-solid fa-hotel"></i> Hotels Nearby
+        </a>
+        <a href="https://www.google.com/maps/search/Restaurants+near+me" class="btn" target="_blank">
+            <i class="fa-solid fa-utensils"></i> Restaurants Nearby
+        </a>
+        <a href="https://www.google.com/maps/search/Police+Stations+near+me" class="btn" target="_blank">
+            <i class="fa-solid fa-shield-halved"></i> Police Stations
+        </a>
+        <a href="https://www.google.com/maps/search/Hospitals+near+me" class="btn" target="_blank">
+            <i class="fa-solid fa-hospital"></i> Hospitals
+        </a>
+        <a href="https://www.olacabs.com/" class="btn" target="_blank">
+            <i class="fa-solid fa-taxi"></i> Ola Cabs
+        </a>
+        <a href="https://www.uber.com/" class="btn" target="_blank">
+            <i class="fa-brands fa-uber"></i> Uber Cabs
+        </a>
+        <a href="https://rapido.bike/" class="btn" target="_blank">
+            <i class="fa-solid fa-motorcycle"></i> Rapido Bike
+        </a>
+    </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
